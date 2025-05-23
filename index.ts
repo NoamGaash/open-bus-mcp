@@ -2,7 +2,7 @@ import { FastMCP } from "fastmcp";
 import { z } from "zod"; // Or any validation library that supports Standard Schema
 import staticSwagger from './swagger.json'
 
-const swagger = await fetch('https://open-bus-stride-api.hasadna.org.il/openapi.json')
+const swagger: typeof staticSwagger = await fetch('https://open-bus-stride-api.hasadna.org.il/openapi.json')
   .then(res => res.json())
   .catch(() => {
     console.warn('Failed to fetch swagger.json, using static version');
