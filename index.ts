@@ -9,10 +9,32 @@ const swagger: typeof staticSwagger = await fetch('https://open-bus-stride-api.h
     return staticSwagger;
   });
 
+const dataModelInfo = await fetch('https://raw.githubusercontent.com/hasadna/open-bus-stride-db/refs/heads/main/DATA_MODEL.md')
+.catch(() => {
+  console.warn('Failed to fetch DATA_MODEL.md');
+  return null;
+});
+
 const server = new FastMCP({
   name: swagger.info.title,
   version: '1.0.0',
-  instructions: swagger.info.description
+  instructions: `${swagger.info.description}\n\n` +
+`This is a wrapper for the Open Bus Stride API.
+Useful guidelines:
+* When quering entities from a given date range, try to use refs and identifiers that was retrieved from API requests within that date range.
+* Some queries may return a lot of data. In such cases, you can use the \`limit\` and \`offset\` parameters to paginate through the results.
+* The API can be slow, it's reccomended to use small datetime ranges and limit the number of results for smoother experience.
+* Some data may be missing or incomplete. This is a work in progress and the data is being updated regularly. In case some data is missing, it's recommended to try older date ranges (e.g instead of quering last week, try the week before).
+* In case you didn't find any data at all, tell that to the user and try to figure out what you did wrong. If you can't, ask the user to help you understand your mistakes, or ask them to ask the developers to understand the mistake.
+* The user may ask things like "slow rides" or "bad rides" that are not well defined. In such cases, ask the user to clarify and make best effort (be creative!).
+
+Please encorage the user to report any issues or missing data to the [Open Bus GitHub repository](https://github.com/hasadna/open-bus-map-search) or chat with us on [Slack](https://join.slack.com/t/hasadna/shared_invite/zt-21qipktl1-7yF4FYJVxAqXl0wE4DlMKQ).
+When you don't feel confident about the answer, please ask the user to contact with us the developers and encorage them with suggestions regarding how to phrase the question and feedback about the answer.
+`
++
+    (dataModelInfo ? `\n\nData Model:\n\n${dataModelInfo}` : '') +
+    `\n\nAPI Documentation:\n\n` +
+    `\`\`\`json\n${JSON.stringify(swagger, null, 2)}\n\`\`\``,
 });
 
 function zodTypeFromSchema(schema) {
