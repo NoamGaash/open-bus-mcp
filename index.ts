@@ -76,9 +76,10 @@ for (const [path, methods] of Object.entries(swagger.paths)) {
       const url = `https://open-bus-stride-api.hasadna.org.il${path}?${params.toString()}`;
       console.log(`Fetching ${url}`);
       try {
+        const start = Date.now();
         const res = await fetch(url);
-        const text = await res.text();
-        console.log(`Response from ${url}:`, text);
+        const end = Date.now();
+        const text = await res.text() + `\n\nResponse time: ${end - start}ms`;
         return { type: 'text', text };
       } catch (e) {
         console.error(`Error fetching ${url}:`, e);
