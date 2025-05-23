@@ -39,10 +39,17 @@ for (const [path, methods] of Object.entries(swagger.paths)) {
       for (const [k, v] of Object.entries(args)) {
         if (v !== undefined && v !== null) params.append(k, String(v));
       }
-      const url = `https://api.openbus.stride.org.il${path}?${params.toString()}`;
-      const res = await fetch(url);
-      const text = await res.text();
-      return { type: 'text', text };
+      const url = `https://open-bus-stride-api.hasadna.org.il${path}?${params.toString()}`;
+      console.log(`Fetching ${url}`);
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        console.log(`Response from ${url}:`, text);
+        return { type: 'text', text };
+      } catch (e) {
+        console.error(`Error fetching ${url}:`, e);
+        return { type: 'text', text: `Error fetching ${url}: ${e}` };
+      }
     }
   });
 }
