@@ -27,11 +27,15 @@ for (const [path, methods] of Object.entries(swagger.paths)) {
   const paramDefs = (details.parameters || []);
   const paramShape = {};
   for (const param of paramDefs) {
-    paramShape[param.name] = (param.required ? zodTypeFromSchema(param.schema) : zodTypeFromSchema(param.schema).optional());
+    let zodParam = param.required ? zodTypeFromSchema(param.schema) : zodTypeFromSchema(param.schema).optional();
+    if (param.description) {
+      zodParam = zodParam.describe(param.description);
+    }
+    paramShape[param.name] = zodParam;
   }
   server.addTool({
     name: details.operationId,
-    description: details.summary || details.description,
+    description: details.description || details.summary,
     parameters: z.object(paramShape),
     async execute(args) {
       // Build query string
