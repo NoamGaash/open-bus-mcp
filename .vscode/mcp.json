@@ -1,0 +1,7 @@
+{
+    "servers": {
+        "my-mcp-server-68d142f6": {
+            "url": "http://localhost:3000/stream"
+        }
+    }
+}

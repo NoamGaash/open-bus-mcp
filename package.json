@@ -1,0 +1,17 @@
+{
+  "name": "open-bus-mcp-sse",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "fastmcp": "^2.1.0",
+    "zod": "^3.25.20"
+  },
+  "type": "module"
+}
